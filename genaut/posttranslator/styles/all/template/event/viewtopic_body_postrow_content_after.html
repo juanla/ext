@@ -1,0 +1,12 @@
+
+{% if GENAUT_PT_ENABLE and S_VIEWTOPIC %}
+<div id="posttranslate-loading-{postrow.POST_ID}" style="display:none;">
+    <img src="/ext/genaut/posttranslator/styles/all/theme/images/spinner.gif" alt="{{ lang('POSTTRANSLATOR_LOADING') }}">
+</div>
+<a id="posttranslate-link-{postrow.POST_ID}" data-postid="{postrow.POST_ID}" href="javascript:void(0);" onclick="phpbb.ajaxCallbacks['genaut_posttranslate'].call(this);" title="{{ lang('POSTTRANSLATOR_LINK') }}">
+	<span>{{ lang('POSTTRANSLATOR_LINK') }}</span> 
+</a>
+<a id="posttranslate-restore-{postrow.POST_ID}" data-postid="{postrow.POST_ID}" href="javascript:void(0);" onclick="phpbb.ajaxCallbacks['genaut_posttranslate_restore'].call(this);" title="{{ lang('POSTTRANSLATOR_RESTORE') }}" style="display:none;">
+	<span>{{ lang('POSTTRANSLATOR_RESTORE') }}</span> 
+</a>
+{% endif %}

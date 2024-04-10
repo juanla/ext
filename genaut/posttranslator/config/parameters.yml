@@ -1,0 +1,2 @@
+parameters:
+    genaut.posttranslator.tables.posttranslator_table: '%core.table_prefix%genaut_posttranslator_table'

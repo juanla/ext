@@ -1,0 +1,96 @@
+{% if GENAUT_PT_ENABLE and S_VIEWTOPIC %}
+<script>
+(function($) {
+
+	'use strict';
+	
+		var posttranslate_originals = {};
+
+		
+		phpbb.addAjaxCallback('genaut_posttranslate_restore', function(data) {
+			var element = this;
+			var contentDiv = $(element).closest('.post').find('.content');
+			var postId = $(element).data('postid');
+			var loading = $('#posttranslate-loading-'+postId);
+			var link = $('#posttranslate-link-'+postId);
+			var restore = $('#posttranslate-restore-'+postId);
+
+			if (posttranslate_originals[postId]) {
+				var text = posttranslate_originals[postId][0];
+				
+				contentDiv.hide();
+				loading.show();
+
+				contentDiv.html(text);
+
+				loading.hide();
+				contentDiv.show();
+
+				link.show();
+				restore.hide();
+			}
+
+		});
+
+		phpbb.addAjaxCallback('genaut_posttranslate', function(data) {
+
+			var element = this;
+			var contentDiv = $(element).closest('.post').find('.content');
+			var postId = $(element).data('postid');
+			var loading = $('#posttranslate-loading-'+postId);
+			var link = $('#posttranslate-link-'+postId);
+			var restore = $('#posttranslate-restore-'+postId);
+
+			if (contentDiv.length === 0) {
+				console.error('El div "content" asociado no se encontró.');
+				return; 
+			}
+
+			var text = contentDiv.html();
+			if (!posttranslate_originals[postId]) {
+    			posttranslate_originals[postId] = []; 
+			}
+			posttranslate_originals[postId][0]= text;
+
+			var toLanguage = "";
+			try{
+				toLanguage = navigator.language || navigator.userLanguage;
+				toLanguage = toLanguage.substring(0, 2);
+			}catch(e){}
+			
+			var formData = new FormData();
+			formData.append('text', text);
+			formData.append('lang_target', toLanguage);
+
+			$.ajax({
+				url: "/app.php/genaut/translate",
+				type: "POST",
+				processData: false, 
+   				contentType: false, 
+				data: formData,
+				beforeSend: function(){
+					loading.show();
+					contentDiv.hide();
+					link.hide();
+				},
+				success: function(response) {
+					contentDiv.html(response);
+					link.hide();
+					restore.show();
+				},
+				complete: function(){
+					contentDiv.show();
+					loading.hide();
+				},
+				error: function(xhr, status, error) {
+					link.show();
+        			console.error("Error: " + status + " " + error);
+    			}
+			});
+			
+		});
+	
+	})(jQuery);
+
+</script>
+{% endif %}

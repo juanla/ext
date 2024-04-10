@@ -1,0 +1,35 @@
+imports:
+    - { resource: parameters.yml }
+
+services:
+    genaut.posttranslator.controller.acp:
+        class: genaut\posttranslator\controller\acp_controller
+        arguments:
+            - '@config'
+            - '@language'
+            - '@log'
+            - '@request'
+            - '@template'
+            - '@user'
+
+    genaut.posttranslator.controller.translator_controller:
+        class: genaut\posttranslator\controller\translator_controller
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@request'
+
+    genaut.posttranslator.service:
+        class: genaut\posttranslator\service
+        arguments:
+            - '@user'
+            - '%genaut.posttranslator.tables.posttranslator_table%'
+    
+    genaut.posttranslator.listener:
+        class: genaut\posttranslator\event\main_listener
+        arguments:
+            - '@template'
+            - '@config'
+        tags:
+            - { name: event.listener }

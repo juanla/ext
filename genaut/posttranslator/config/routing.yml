@@ -1,0 +1,4 @@
+genaut_posttranslator_route:
+    path: /genaut/translate
+    defaults: { _controller: genaut.posttranslator.controller.translator_controller:translate}
+    methods: [POST]
