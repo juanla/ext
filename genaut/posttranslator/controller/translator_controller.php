@@ -66,9 +66,7 @@ class translator_controller
 			$translation_response = 'Cant\'t translate (Not received info). Original text:' . $text;
 		} else {
 
-			sleep(1);
-			$translation_response = "Test";
-/*
+
 			$url = "https://api.lecto.ai/v1/translate/text";
 			$curl = curl_init($url);
 			
@@ -82,7 +80,7 @@ class translator_controller
 			curl_setopt($curl, CURLOPT_POST, true);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
 			//Only Development mode
-			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			//curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($curl, CURLOPT_HTTPHEADER, [
 				"X-API-Key: $apiKey",
 				'Content-Type: application/json',
@@ -103,7 +101,7 @@ class translator_controller
 			}
 
 			// Cerrar la sesión cURL
-			curl_close($curl);*/
+			curl_close($curl);
 		}
 
 		$this->template->assign_var('TRANSLATION_RESPONSE', $translation_response);
